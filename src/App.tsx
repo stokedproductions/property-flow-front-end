@@ -1,14 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useEffect } from 'react';
 import './App.css';
 
+import { AppDispatch, RootState } from './app/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchListings } from './features/listings/listingsSlice';
+import Listings from './features/listings/Listings';
+
+import Logo from './images/property-flow-logo.jpg'
+import Header from './components/Header';
+import LoadingListings from './components/LoadingListings';
+import Footer from './components/Footer';
+import ErrorBlock from './components/ErrorBlock';
+
+
 function App() {
+  const dispatch = useDispatch<AppDispatch>()
+  const { status } = useSelector((state: RootState) => state.listings);
+
+  useEffect(() => {
+    dispatch(fetchListings());
+  }, []);
+
   return (
     <div className="App">
-      <div className="flex justify-center items-center w-1/3 h-[400px] bg-black mx-auto">
-        <h1 className="text-white text-3xl">Hello World!!!!</h1>
-      </div>
+      <Header />
+      { status === 'idle' ? <Listings /> : status === "loading" ? <LoadingListings /> : <ErrorBlock /> }
+      <Footer />
     </div>
   );
 }
