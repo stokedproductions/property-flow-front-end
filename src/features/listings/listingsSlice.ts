@@ -12,7 +12,7 @@ export const fetchListings = createAsyncThunk(
   async () => {
     const url = 'https://property-flow-backend-production.up.railway.app/listings';
     // TODO put this in the .env file
-    const API_KEY = 'clXOArnINdNoDByAzAuuExI_9vX7LJYjppe8wwexcKQ';
+    const API_KEY = process.env.REACT_APP_API_KEY || "";
 
     // TODO add this to a try catch block
     const response = await fetch(url, {
